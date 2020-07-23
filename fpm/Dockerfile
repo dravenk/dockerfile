@@ -5,7 +5,7 @@ ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update -y \
-    && apt-get install -y git vim mariadb-client nginx \
+    && apt-get install -y git vim wget mariadb-client nginx \
     && apt-get clean \
 	&& apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	rm -rf /var/lib/apt/lists/* \
@@ -36,7 +36,8 @@ EXPOSE 80
 EXPOSE 443
 
 COPY ./conf.d/site.conf /etc/nginx/conf.d/
-COPY php-upload.ini /usr/local/etc/php/conf.d/php-uploads.ini
+COPY ./php-fpm.d/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
+COPY ./php-conf.d/php-upload.ini /usr/local/etc/php/conf.d/php-uploads.ini
 COPY entrypoint.sh /etc/entrypoint.sh
 
 ENTRYPOINT ["sh", "/etc/entrypoint.sh"]
