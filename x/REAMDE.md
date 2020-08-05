@@ -1,11 +1,6 @@
-Build
-```
-docker build . -t dravenk/dp
-```
-
 Try:
 ```
-docker run --name some-drupal -p 8080:80 -d dravenk/dp
+docker run --name some-drupal -p 8080:80 -d dravenk/x
 ````
 OR: 
 Create a drupal 9 project with composer.
@@ -15,5 +10,5 @@ cd d9web
 ```
 Run docker container with local project.
 ```
-docker run --name some-drupal -p 8080:80 -v $PWD:/var/www/html -d dravenk/dp:web
+docker run --name some-drupal -p 8080:80 -v $PWD:/var/www/html -d dravenk/x
 ```
