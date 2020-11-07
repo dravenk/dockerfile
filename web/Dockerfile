@@ -1,6 +1,6 @@
 FROM dravenk/dp:fpm
 
-RUN rm -rf /var/www/html/.* \
+RUN rm -rf /var/www/html/.*; \
   rm -rf /var/www/html/*
 
 RUN composer create-project drupal/recommended-project . -vvv; \
