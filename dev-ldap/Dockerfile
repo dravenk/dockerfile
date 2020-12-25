@@ -1,4 +1,4 @@
-FROM dravenk/dp-dev
+FROM dravenk/dp:dev
 
 RUN set -x \
     && apt-get update \
