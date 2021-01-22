@@ -32,6 +32,11 @@ RUN  \
     # Install apcu and uploadprogress
     pecl install apcu uploadprogress && docker-php-ext-enable apcu uploadprogress
 
+## Remove this temporary solution after the issue XXX has been fixed.
+## See https://github.com/drush-ops/drush-launcher/issues/84
+RUN echo "alias drush='./vendor/bin/drush'" >> ~/.bashrc \
+    source ~/.bashrc
+
 EXPOSE 80
 EXPOSE 443
 
