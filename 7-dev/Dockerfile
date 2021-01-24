@@ -1,4 +1,4 @@
-FROM dravenk:7
+FROM dravenk/dp:7
 
 # Install xdebug
 RUN pecl install xdebug && docker-php-ext-enable xdebug
