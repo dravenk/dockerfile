@@ -10,7 +10,7 @@ RUN apt-get update -y \
     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
     rm -rf /var/lib/apt/lists/* \
     ## Adding bcmath for contrib module like drupal/commerce
-    && docker-php-ext-install bcmath \
+    && docker-php-ext-install bcmath; \
     ## Copy php.ini
     cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 
@@ -34,7 +34,7 @@ RUN  \
 
 ## Remove this temporary solution after the issue XXX has been fixed.
 ## See https://github.com/drush-ops/drush-launcher/issues/84
-RUN echo "alias drush='./vendor/bin/drush'" >> ~/.bashrc \
+RUN echo "alias drush='./vendor/bin/drush'" >> ~/.bashrc; \
     source ~/.bashrc
 
 EXPOSE 80
