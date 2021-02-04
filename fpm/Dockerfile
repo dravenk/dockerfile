@@ -21,21 +21,22 @@ RUN  \
     php -- --install-dir=/usr/local/bin/ --filename=composer \
     ## Install drush
     && curl -L --silent https://github.com/drush-ops/drush/releases/download/${DRUSH_VERSION}/drush.phar \
-    > /usr/local/bin/drush8 && chmod +x /usr/local/bin/drush8 \
+    > /usr/local/bin/drush8 && chmod +x /usr/local/bin/drush8; \
     ## Install drush-launcher
     wget -O /usr/local/bin/drush https://github.com/drush-ops/drush-launcher/releases/latest/download/drush.phar \
-    && chmod +x /usr/local/bin/drush \
+    && chmod +x /usr/local/bin/drush; \
     # Install drupal-console
-    curl https://drupalconsole.com/installer -L -o drupal.phar && \
-    mv drupal.phar /usr/local/bin/drupal && \
-    chmod +x /usr/local/bin/drupal \
-    # Install apcu and uploadprogress
-    pecl install apcu uploadprogress && docker-php-ext-enable apcu uploadprogress
+    wget -O drupal.phar https://drupalconsole.com/installer \
+    && mv drupal.phar /usr/local/bin/drupal \
+    && chmod +x /usr/local/bin/drupal
+
+# Install apcu and uploadprogress
+RUN pecl install apcu uploadprogress && docker-php-ext-enable apcu uploadprogress
 
 ## Remove this temporary solution after the issue XXX has been fixed.
 ## See https://github.com/drush-ops/drush-launcher/issues/84
-RUN echo "alias drush='./vendor/bin/drush'" >> ~/.bashrc; \
-    source ~/.bashrc
+RUN echo "alias drush='./vendor/bin/drush'" >> ~/.bashrc \
+    #source ~/.bashrc
 
 EXPOSE 80
 EXPOSE 443
