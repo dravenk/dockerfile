@@ -11,11 +11,6 @@ RUN { \
     echo 'alias drupalcbf="phpcbf --standard=Drupal --extensions='php,module,inc,install,test,profile,theme,css,info,txt,md,yml'"'; \
     } >> /root/.bashrc
 
-## Remove this temporary solution after the issue XXX has been fixed.
-## See https://github.com/drush-ops/drush-launcher/issues/84
-RUN echo "alias drush='./vendor/bin/drush'" >> ~/.bashrc
-   # source ~/.bashrc
-
 # Install xdebug
 RUN pecl install xdebug && docker-php-ext-enable xdebug
 

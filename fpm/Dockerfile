@@ -14,7 +14,7 @@ RUN apt-get update -y \
     ## Copy php.ini
     cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 
-ENV DRUSH_VERSION 8.4.5
+ENV DRUSH_VERSION 8.4.6
 RUN  \
     ## Install composer. Overwrite older versions.
     curl -sS https://getcomposer.org/installer | \
