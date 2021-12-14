@@ -24,11 +24,11 @@ RUN  \
     > /usr/local/bin/drush8 && chmod +x /usr/local/bin/drush8; \
     ## Install drush-launcher
     wget -O /usr/local/bin/drush https://github.com/drush-ops/drush-launcher/releases/latest/download/drush.phar \
-    && chmod +x /usr/local/bin/drush; \
+    && chmod +x /usr/local/bin/drush; 
     # Install drupal-console
-    wget -O drupal.phar https://drupalconsole.com/installer \
-    && mv drupal.phar /usr/local/bin/drupal \
-    && chmod +x /usr/local/bin/drupal
+    # wget -O drupal.phar https://drupalconsole.com/installer \
+    # && mv drupal.phar /usr/local/bin/drupal \
+    # && chmod +x /usr/local/bin/drupal
 
 # Install apcu and uploadprogress
 RUN pecl install apcu uploadprogress && docker-php-ext-enable apcu uploadprogress
