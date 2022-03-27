@@ -12,7 +12,7 @@ RUN apt-get update -y \
     ## Adding bcmath for contrib module like drupal/commerce
     && docker-php-ext-install bcmath
 
-ENV DRUSH_VERSION 8.3.5
+ENV DRUSH_VERSION 8.4.6
     ## Install composer
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/bin/ --filename=composer \
