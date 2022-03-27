@@ -13,8 +13,7 @@ RUN { \
 
 RUN /bin/bash -c "source /root/.bashrc"
 
-# Install xdebug
-RUN pecl install xdebug && docker-php-ext-enable xdebug
+
 # See https://xdebug.org/docs/remote
 RUN { \
     echo '[xdebug]'; \
@@ -23,3 +22,6 @@ RUN { \
     echo 'xdebug.discover_client_host=true'; \
     echo 'xdebug.client_host=host.docker.internal'; \
     } >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+# Install xdebug
+# RUN pecl install xdebug && docker-php-ext-enable xdebug
+RUN docker-php-ext-enable xdebug

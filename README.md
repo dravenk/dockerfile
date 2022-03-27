@@ -10,3 +10,15 @@ https://cloud.docker.com/repository/docker/dravenk/dp/builds
 
 Docker files for drupal
 
+### build and push to upstream
+
+```console
+docker build -t dravenk/dp:fpm fpm
+docker tag dravenk/dp:fpm dravenk/dp:latest
+docker push dravenk/dp:fpm
+docker push dravenk/dp:latest
+
+docker build -t dravenk/dp:dev dev
+docker push dravenk/dp:dev
+```
+
