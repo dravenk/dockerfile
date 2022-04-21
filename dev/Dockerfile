@@ -37,7 +37,9 @@ RUN chmod u+w web/sites/default \
 
 RUN rm -rf vendor/drupal/coder/.git
 
-RUN composer require cweagans/composer-patches
+RUN composer require --dev phpspec/prophecy-phpunit:^2 \
+    && composer require cweagans/composer-patches
+
 RUN composer config allow-plugins.composer/installers true \
     && composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true \
     && composer config allow-plugins.drupal/core-composer-scaffold true \
