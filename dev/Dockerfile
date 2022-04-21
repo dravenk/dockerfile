@@ -34,3 +34,10 @@ RUN chmod u+w web/sites/default \
     && chmod 777 -R web/sites/default/files \
     && cp web/sites/default/default.settings.php web/sites/default/settings.php \
     && chmod 777 web/sites/default/settings.php
+
+RUN wget https://github.com/drupal-composer/drupal-project/blob/9.x/.gitignore -O .gitignore
+
+RUN git config --global user.email "you@example.com" && git config --global user.name "Your Name" \
+    && git init \
+    && rm -rf vendor/drupal/coder/.git \
+    && git add . && git commit -m 'Init'
