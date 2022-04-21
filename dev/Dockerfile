@@ -35,9 +35,17 @@ RUN chmod u+w web/sites/default \
     && cp web/sites/default/default.settings.php web/sites/default/settings.php \
     && chmod 777 web/sites/default/settings.php
 
-RUN wget https://github.com/drupal-composer/drupal-project/blob/9.x/.gitignore -O .gitignore
+RUN rm -rf vendor/drupal/coder/.git
 
-RUN git config --global user.email "you@example.com" && git config --global user.name "Your Name" \
-    && git init \
-    && rm -rf vendor/drupal/coder/.git \
-    && git add . && git commit -m 'Init'
+RUN composer require cweagans/composer-patches
+RUN composer config allow-plugins.composer/installers true \
+    && composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true \
+    && composer config allow-plugins.drupal/core-composer-scaffold true \
+    && composer config allow-plugins.drupal/core-project-message true \
+    && composer config allow-plugins.cweagans/composer-patches true \
+    && composer config allow-plugins.drupal/console-extend-plugin true \
+    && composer config allow-plugins.wikimedia/composer-merge-plugin true
+
+RUN wget https://raw.githubusercontent.com/drupal-composer/drupal-project/9.x/.gitignore -O .gitignore \
+    && git config --global user.email "you@example.com" && git config --global user.name "Your Name" \
+    && git init && git add . && git commit -m 'Init'
