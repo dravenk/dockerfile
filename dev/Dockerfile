@@ -8,9 +8,6 @@ RUN set -eux; \
         composer global require drupal/coder && \
         composer global require dealerdirect/phpcodesniffer-composer-installer
 
-## https://www.drupal.org/docs/develop/using-composer/starting-a-site-using-drupal-composer-project-templates#s-workaround
-RUN chmod u+w web/sites/default
-
 RUN { \
     echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"'; \
     echo 'alias drupalcs="phpcs --standard=Drupal --extensions='php,module,inc,install,test,profile,theme,css,info,txt,md,yml'"'; \
@@ -30,3 +27,10 @@ RUN { \
     } >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 # Install xdebug
 RUN pecl install xdebug; docker-php-ext-enable xdebug
+
+## https://www.drupal.org/docs/develop/using-composer/starting-a-site-using-drupal-composer-project-templates#s-workaround
+RUN chmod u+w web/sites/default \
+    && mkdir web/sites/default/files \
+    && chmod 777 -R web/sites/default/files \
+    && cp web/sites/default/default.settings.php web/sites/default/settings.php \
+    && chmod 777 web/sites/default/settings.php
