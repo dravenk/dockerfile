@@ -60,6 +60,6 @@ RUN cp web/core/phpunit.xml.dist web/core/phpunit.xml && \
     cp web/core/phpcs.xml.dist web/core/phpcs.xml
 RUN sed -i 's|name="SIMPLETEST_BASE_URL" value=""|name="SIMPLETEST_BASE_URL" value="http://localhost"|g' web/core/phpunit.xml
 RUN sed -i 's|name="SIMPLETEST_DB" value=""|name="SIMPLETEST_DB" value="sqlite:sites/default/files/.ht.sqlite#test"|g' web/core/phpunit.xml
-RUN sed -i 's|name="BROWSERTEST_OUTPUT_DIRECTORY" value=""|name="BROWSERTEST_OUTPUT_DIRECTORY" value="/opt/drupal/web/sites/default/files/browser_output"|g' web/core/phpunit.xml
+RUN sed -i 's|name="BROWSERTEST_OUTPUT_DIRECTORY" value=""|name="BROWSERTEST_OUTPUT_DIRECTORY" value="/opt/drupal/web/sites/default/files/simpletest/browser_output"|g' web/core/phpunit.xml
 # running phpunit test
 #phpunit -c web/core/phpunit.xml

@@ -12,3 +12,10 @@ Run docker container with local project.
 ```
 docker run --name some-drupal -p 8080:80 -v $PWD:/var/www/html -d dravenk/dp:dev
 ```
+
+running phpunit test
+```
+docker rm -f dpdev
+docker run --name dpdev -p 8080:80 -d dravenk/dp:dev
+docker exec -it dpdev phpunit -c web/core/phpunit.xml
+```
