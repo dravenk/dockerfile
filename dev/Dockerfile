@@ -51,3 +51,15 @@ RUN composer config minimum-stability dev
 RUN wget https://raw.githubusercontent.com/drupal-composer/drupal-project/9.x/.gitignore -O .gitignore \
     && git config --global user.email "you@example.com" && git config --global user.name "Your Name" \
     && git init && git add . && git commit -m 'Init'
+
+# https://www.drupal.org/docs/automated-testing/phpunit-in-drupal/running-phpunit-tests#s-configure-phpunit
+RUN mkdir -p /opt/drupal/web/sites/default/files/simpletest/browser_output && \
+    chmod -R 777 /opt/drupal/web/sites/default/files
+RUN cp web/core/phpunit.xml.dist web/core/phpunit.xml && \
+    phpunit -c web/core/phpunit.xml --migrate-configuration && \
+    cp web/core/phpcs.xml.dist web/core/phpcs.xml
+RUN sed -i 's|name="SIMPLETEST_BASE_URL" value=""|name="SIMPLETEST_BASE_URL" value="http://localhost"|g' web/core/phpunit.xml
+RUN sed -i 's|name="SIMPLETEST_DB" value=""|name="SIMPLETEST_DB" value="sqlite:sites/default/files/.ht.sqlite#test"|g' web/core/phpunit.xml
+RUN sed -i 's|name="BROWSERTEST_OUTPUT_DIRECTORY" value=""|name="BROWSERTEST_OUTPUT_DIRECTORY" value="/opt/drupal/web/sites/default/files/browser_output"|g' web/core/phpunit.xml
+# running phpunit test
+#phpunit -c web/core/phpunit.xml
