@@ -15,10 +15,10 @@ Docker files for drupal
 ```console
 docker build -t dravenk/dp:fpm fpm
 docker tag dravenk/dp:fpm dravenk/dp:latest
+docker build -t dravenk/dp:dev dev
+
 docker push dravenk/dp:fpm
 docker push dravenk/dp:latest
-
-docker build -t dravenk/dp:dev dev
 docker push dravenk/dp:dev
 ```
 

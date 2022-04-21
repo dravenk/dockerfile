@@ -1,8 +1,15 @@
 FROM dravenk/dp
 
+## https://www.drupal.org/docs/develop/using-composer/starting-a-site-using-drupal-composer-project-templates#s-adding-drupalcore-dev
+# composer require drush/drush && \
+# composer require --dev -W drupal/core-dev && \
+RUN set -eux; composer require --dev -W drupal/core-dev:* -vvv
 RUN set -eux; \
         composer global require drupal/coder && \
         composer global require dealerdirect/phpcodesniffer-composer-installer
+
+## https://www.drupal.org/docs/develop/using-composer/starting-a-site-using-drupal-composer-project-templates#s-workaround
+RUN chmod u+w web/sites/default
 
 RUN { \
     echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"'; \
@@ -13,7 +20,6 @@ RUN { \
 
 RUN /bin/bash -c "source /root/.bashrc"
 
-
 # See https://xdebug.org/docs/remote
 RUN { \
     echo '[xdebug]'; \
@@ -23,5 +29,4 @@ RUN { \
     echo 'xdebug.client_host=host.docker.internal'; \
     } >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 # Install xdebug
-# RUN pecl install xdebug && docker-php-ext-enable xdebug
-RUN docker-php-ext-enable xdebug
+RUN pecl install xdebug; docker-php-ext-enable xdebug

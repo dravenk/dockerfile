@@ -5,10 +5,11 @@ ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update -y \
-    && apt-get install -y pecl git ssh vim wget mariadb-client nginx \
+    # && apt-get install -y pecl git ssh vim wget mariadb-client nginx \
+    && apt-get install -y apt-utils git ssh vim wget mariadb-client nginx \
     && apt-get clean \
-    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-    rm -rf /var/lib/apt/lists/* \
+    # && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+    # rm -rf /var/lib/apt/lists/* \
     ## Adding bcmath for contrib module like drupal/commerce
     && docker-php-ext-install bcmath; \
     ## Copy php.ini
@@ -20,6 +21,7 @@ RUN  \
     curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/local/bin/ --filename=composer \
     ## Install drush
+    && composer require drush/drush \
     && wget -O /usr/local/bin/drush8 https://github.com/drush-ops/drush/releases/download/${DRUSH_VERSION}/drush.phar \
     && chmod +x /usr/local/bin/drush8; \
     ## Install drush-launcher
