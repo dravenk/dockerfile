@@ -45,7 +45,7 @@ RUN composer config allow-plugins.composer/installers true \
     && composer config allow-plugins.cweagans/composer-patches true \
     && composer config allow-plugins.drupal/console-extend-plugin true \
     && composer config allow-plugins.wikimedia/composer-merge-plugin true
-
+RUN composer config minimum-stability dev
 RUN wget https://raw.githubusercontent.com/drupal-composer/drupal-project/9.x/.gitignore -O .gitignore \
     && git config --global user.email "you@example.com" && git config --global user.name "Your Name" \
     && git init && git add . && git commit -m 'Init'
