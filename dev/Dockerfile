@@ -20,6 +20,9 @@ RUN /bin/bash -c "source /root/.bashrc"
 # See https://xdebug.org/docs/remote
 RUN { \
     echo '[xdebug]'; \
+    # disabled
+    # echo 'xdebug.mode=off'; \
+    # echo 'xdebug.mode=develop,coverage,debug'; \
     echo 'xdebug.mode=develop,coverage,debug'; \
     echo 'xdebug.start_with_request=yes'; \
     echo 'xdebug.discover_client_host=true'; \
@@ -56,12 +59,16 @@ RUN wget https://raw.githubusercontent.com/drupal-composer/drupal-project/9.x/.g
 RUN mkdir -p /opt/drupal/web/sites/default/files/simpletest/browser_output && \
     chmod -R 777 /opt/drupal/web/sites/default/files
 RUN cp web/core/phpunit.xml.dist web/core/phpunit.xml && \
-    phpunit -c web/core/phpunit.xml --migrate-configuration && \
+    phpunit -c /opt/drupal/web/core/phpunit.xml --migrate-configuration && \
     cp web/core/phpcs.xml.dist web/core/phpcs.xml
 RUN sed -i 's|name="SIMPLETEST_BASE_URL" value=""|name="SIMPLETEST_BASE_URL" value="http://localhost"|g' web/core/phpunit.xml
 RUN sed -i 's|name="SIMPLETEST_DB" value=""|name="SIMPLETEST_DB" value="sqlite:sites/default/files/.ht.sqlite#test"|g' web/core/phpunit.xml
 RUN sed -i 's|name="BROWSERTEST_OUTPUT_DIRECTORY" value=""|name="BROWSERTEST_OUTPUT_DIRECTORY" value="/opt/drupal/web/sites/default/files/simpletest/browser_output"|g' web/core/phpunit.xml
-# running phpunit test
-#phpunit -c web/core/phpunit.xml
+RUN sed -i 's|name="<!-- <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/> -->|name="<env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>|g' web/core/phpunit.xml
 
+# running phpunit test
+# phpunit -c /opt/drupal/web/core/phpunit.xml
 EXPOSE 9003
+
+#https://github.com/docker-library/php/blob/6e600f59a4405b5066eb78f5f02180212dffd065/7.0/fpm/php-fpm.conf
+COPY ./php/conf.d/docker-php-ext-log.ini /usr/local/etc/php/conf.d/docker-php-ext-log.ini
