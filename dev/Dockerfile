@@ -63,3 +63,5 @@ RUN sed -i 's|name="SIMPLETEST_DB" value=""|name="SIMPLETEST_DB" value="sqlite:s
 RUN sed -i 's|name="BROWSERTEST_OUTPUT_DIRECTORY" value=""|name="BROWSERTEST_OUTPUT_DIRECTORY" value="/opt/drupal/web/sites/default/files/simpletest/browser_output"|g' web/core/phpunit.xml
 # running phpunit test
 #phpunit -c web/core/phpunit.xml
+
+EXPOSE 9003
