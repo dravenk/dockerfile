@@ -44,6 +44,7 @@ RUN echo "alias drush='./vendor/bin/drush'" >> ~/.bashrc && \
 EXPOSE 80
 EXPOSE 443
 
+COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY ./conf.d/site.conf /etc/nginx/conf.d/
 COPY ./php/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 COPY ./php/conf.d/php-upload.ini /usr/local/etc/php/conf.d/php-uploads.ini
