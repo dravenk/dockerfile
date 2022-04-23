@@ -22,3 +22,8 @@ docker push dravenk/dp:latest
 docker push dravenk/dp:dev
 ```
 
+running phpunit test
+```
+docker rm -f dpdev; docker run --name dpdev -d dravenk/dp:dev
+docker exec -it dpdev phpunit -c web/core/phpunit.xml
+```

@@ -31,12 +31,16 @@ RUN { \
 # Install xdebug
 RUN pecl install xdebug; docker-php-ext-enable xdebug
 
+ENV DEFAULT_DIR /opt/drupal/web/sites/default
+ENV FILES_DIR /opt/drupal/web/sites/default/files
+ENV WEB_DIR /opt/drupal/web
+
 ## https://www.drupal.org/docs/develop/using-composer/starting-a-site-using-drupal-composer-project-templates#s-workaround
-RUN chmod u+w web/sites/default \
-    && mkdir web/sites/default/files \
-    && chmod 777 -R web/sites/default/files \
-    && cp web/sites/default/default.settings.php web/sites/default/settings.php \
-    && chmod 777 web/sites/default/settings.php
+# RUN chmod u+w web/sites/default \
+RUN mkdir ${FILES_DIR} \
+    && chmod -R 777 ${FILES_DIR} \
+    && cp ${DEFAULT_DIR}/default.settings.php ${DEFAULT_DIR}/settings.php \
+    && chmod 777 ${DEFAULT_DIR}/settings.php
 
 RUN rm -rf vendor/drupal/coder/.git
 
@@ -56,19 +60,27 @@ RUN wget https://raw.githubusercontent.com/drupal-composer/drupal-project/9.x/.g
     && git init && git add . && git commit -m 'Init'
 
 # https://www.drupal.org/docs/automated-testing/phpunit-in-drupal/running-phpunit-tests#s-configure-phpunit
-RUN mkdir -p /opt/drupal/web/sites/default/files/simpletest/browser_output && \
-    chmod -R 777 /opt/drupal/web/sites/default/files
-RUN cp web/core/phpunit.xml.dist web/core/phpunit.xml && \
-    phpunit -c /opt/drupal/web/core/phpunit.xml --migrate-configuration && \
-    cp web/core/phpcs.xml.dist web/core/phpcs.xml
-RUN sed -i 's|name="SIMPLETEST_BASE_URL" value=""|name="SIMPLETEST_BASE_URL" value="http://localhost"|g' web/core/phpunit.xml
-RUN sed -i 's|name="SIMPLETEST_DB" value=""|name="SIMPLETEST_DB" value="sqlite:sites/default/files/.ht.sqlite#test"|g' web/core/phpunit.xml
-RUN sed -i 's|name="BROWSERTEST_OUTPUT_DIRECTORY" value=""|name="BROWSERTEST_OUTPUT_DIRECTORY" value="/opt/drupal/web/sites/default/files/simpletest/browser_output"|g' web/core/phpunit.xml
-RUN sed -i 's|name="<!-- <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/> -->|name="<env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>|g' web/core/phpunit.xml
+RUN mkdir -p ${FILES_DIR}/simpletest/browser_output\
+    && chown -R www-data:www-data ${FILES_DIR} \
+    && chmod -R 777 ${FILES_DIR}
+
+#Install using SQLite in-memory database.  --account-pass=admin
+# RUN drush si -y --db-url=sqlite:sites/default/files/.ht.sqlite#test
+
+ENV PHPUNIT_CONF ${WEB_DIR}/core/phpunit.xml
+RUN cp web/core/phpunit.xml.dist ${PHPUNIT_CONF} && \
+    phpunit -c ${PHPUNIT_CONF} --migrate-configuration && \
+    cp ${WEB_DIR}/core/phpcs.xml.dist ${PHPUNIT_CONF}
+
+RUN sed -i 's|name="SIMPLETEST_BASE_URL" value=""|name="SIMPLETEST_BASE_URL" value="http://localhost"|g' ${PHPUNIT_CONF}
+RUN sed -i 's|name="SIMPLETEST_DB" value=""|name="SIMPLETEST_DB" value="sqlite://sites/default/files/.ht.sqlite"|g'${PHPUNIT_CONF}
+# RUN sed -i 's|name="SIMPLETEST_DB" value=""|name="SIMPLETEST_DB" value="sqlite://:memory:"|g' web/core/phpunit.xml
+RUN sed -i 's|name="BROWSERTEST_OUTPUT_DIRECTORY" value=""|name="BROWSERTEST_OUTPUT_DIRECTORY" value="/opt/drupal/web/sites/default/files/simpletest/browser_output"|g' ${PHPUNIT_CONF}
+RUN sed -i 's|name="<!-- <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/> -->|name="<env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>|g' ${PHPUNIT_CONF}
 
 # running phpunit test
 # phpunit -c /opt/drupal/web/core/phpunit.xml
-EXPOSE 9003
+# EXPOSE 9003
 
 #https://github.com/docker-library/php/blob/6e600f59a4405b5066eb78f5f02180212dffd065/7.0/fpm/php-fpm.conf
-COPY ./php/conf.d/docker-php-ext-log.ini /usr/local/etc/php/conf.d/docker-php-ext-log.ini
+# COPY ./php/conf.d/docker-php-ext-log.ini /usr/local/etc/php/conf.d/docker-php-ext-log.ini
