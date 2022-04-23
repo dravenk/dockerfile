@@ -17,6 +17,10 @@ docker build -t dravenk/dp:fpm fpm
 docker tag dravenk/dp:fpm dravenk/dp:latest
 docker build -t dravenk/dp:dev dev
 
+docker build -t dravenk/dp:fpm --no-cache fpm
+docker tag dravenk/dp:fpm dravenk/dp:latest
+docker build -t dravenk/dp:dev --no-cache dev
+
 docker push dravenk/dp:fpm
 docker push dravenk/dp:latest
 docker push dravenk/dp:dev

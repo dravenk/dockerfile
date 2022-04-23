@@ -62,18 +62,20 @@ RUN wget https://raw.githubusercontent.com/drupal-composer/drupal-project/9.x/.g
 # https://www.drupal.org/docs/automated-testing/phpunit-in-drupal/running-phpunit-tests#s-configure-phpunit
 RUN mkdir -p ${FILES_DIR}/simpletest/browser_output\
     && chown -R www-data:www-data ${FILES_DIR} \
+    # && chmod -R g+rw ${FILES_DIR}
     && chmod -R 777 ${FILES_DIR}
 
 #Install using SQLite in-memory database.  --account-pass=admin
 # RUN drush si -y --db-url=sqlite:sites/default/files/.ht.sqlite#test
 
 ENV PHPUNIT_CONF ${WEB_DIR}/core/phpunit.xml
+ENV PHPCS_CONF ${WEB_DIR}/core/phpcs.xml
 RUN cp web/core/phpunit.xml.dist ${PHPUNIT_CONF} && \
     phpunit -c ${PHPUNIT_CONF} --migrate-configuration && \
-    cp ${WEB_DIR}/core/phpcs.xml.dist ${PHPUNIT_CONF}
+    cp ${WEB_DIR}/core/phpcs.xml.dist ${PHPCS_CONF}
 
 RUN sed -i 's|name="SIMPLETEST_BASE_URL" value=""|name="SIMPLETEST_BASE_URL" value="http://localhost"|g' ${PHPUNIT_CONF}
-RUN sed -i 's|name="SIMPLETEST_DB" value=""|name="SIMPLETEST_DB" value="sqlite://sites/default/files/.ht.sqlite"|g'${PHPUNIT_CONF}
+RUN sed -i 's|name="SIMPLETEST_DB" value=""|name="SIMPLETEST_DB" value="sqlite://sites/default/files/.ht.sqlite"|g' ${PHPUNIT_CONF}
 # RUN sed -i 's|name="SIMPLETEST_DB" value=""|name="SIMPLETEST_DB" value="sqlite://:memory:"|g' web/core/phpunit.xml
 RUN sed -i 's|name="BROWSERTEST_OUTPUT_DIRECTORY" value=""|name="BROWSERTEST_OUTPUT_DIRECTORY" value="/opt/drupal/web/sites/default/files/simpletest/browser_output"|g' ${PHPUNIT_CONF}
 RUN sed -i 's|name="<!-- <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/> -->|name="<env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>|g' ${PHPUNIT_CONF}
