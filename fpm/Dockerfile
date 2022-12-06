@@ -4,13 +4,12 @@ FROM drupal:fpm
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN export DEBIAN_FRONTEND=noninteractive
+# RUN export DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -y \
-    # && apt-get install -y pecl git ssh vim wget mariadb-client nginx \
-    && apt-get install -y apt-utils git ssh vim wget curl mariadb-client nginx unzip\
+    && apt-get install -y apt-utils pecl git ssh vim wget curl mariadb-client nginx unzip\
     && apt-get clean \
-    # && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
-    # rm -rf /var/lib/apt/lists/* \
+    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
+    rm -rf /var/lib/apt/lists/* \
     ## Adding bcmath for contrib module like drupal/commerce
     && docker-php-ext-install bcmath; \
     ## Copy php.ini
@@ -20,14 +19,14 @@ ENV DRUSH_VERSION 8.4.10
 RUN  \
     ## Install composer. Overwrite older versions.
     curl -sS https://getcomposer.org/installer | \
-    php -- --install-dir=/usr/local/bin/ --filename=composer \
+    php -- --install-dir=/usr/local/bin/ --filename=composer && \
     ## Install drush
-    && composer require drush/drush \
-    && wget -O /usr/local/bin/drush8 https://github.com/drush-ops/drush/releases/download/${DRUSH_VERSION}/drush.phar \
-    && chmod +x /usr/local/bin/drush8; \
+    composer require drush/drush && \
+    wget -O /usr/local/bin/drush8 https://github.com/drush-ops/drush/releases/download/${DRUSH_VERSION}/drush.phar && \
+    chmod +x /usr/local/bin/drush8; \
     ## Install drush-launcher
-    wget -O /usr/local/bin/drush https://github.com/drush-ops/drush-launcher/releases/latest/download/drush.phar \
-    && chmod +x /usr/local/bin/drush;\
+    wget -O /usr/local/bin/drush https://github.com/drush-ops/drush-launcher/releases/latest/download/drush.phar && \
+    chmod +x /usr/local/bin/drush;\
     # Install drupal-console
     curl https://drupalconsole.com/installer -L -o drupal.phar && \
     mv drupal.phar /usr/local/bin/drupal && \
@@ -50,8 +49,8 @@ COPY ./php/conf.d/php-upload.ini /usr/local/etc/php/conf.d/php-uploads.ini
 COPY ./php/conf.d/docker-php-ext-apcu.ini /usr/local/etc/php/conf.d/docker-php-ext-apcu.ini
 COPY ./php/conf.d/docker-php-ext-uploadprogress.ini /usr/local/etc/php/conf.d/docker-php-ext-uploadprogress.ini
 
-EXPOSE 80
-EXPOSE 443
+# EXPOSE 80
+# EXPOSE 443
 
 COPY entrypoint.sh /etc/entrypoint.sh
 ENTRYPOINT ["sh", "/etc/entrypoint.sh"]
