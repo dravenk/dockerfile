@@ -1,12 +1,14 @@
 FROM dravenk/dp
 
 ## https://www.drupal.org/docs/develop/using-composer/starting-a-site-using-drupal-composer-project-templates#s-adding-drupalcore-dev
-RUN set -eux; composer require --dev -W drupal/core-dev:9.4.8  -vvv
-RUN set -eux; \
-        composer global require drupal/coder && \
-        composer global require dealerdirect/phpcodesniffer-composer-installer
-        # composer require drupal/coder && \
-        # composer require dealerdirect/phpcodesniffer-composer-installer
+RUN set -eux; rm composer.lock; composer require --dev -W drupal/core-dev --no-interaction
+
+RUN set -eux; composer global config allow-plugins true -vvv
+RUN set -eux; composer config allow-plugins true -vvv
+
+RUN set -eux; composer global require drupal/coder
+RUN set -eux; composer global require dealerdirect/phpcodesniffer-composer-installer && \
+        composer global config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
 
 RUN { \
     echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"'; \
