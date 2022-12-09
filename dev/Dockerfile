@@ -79,9 +79,12 @@ RUN cp ${WEB_DIR}/core/phpunit.xml.dist ${PHPUNIT_CONF} && \
     cp ${WEB_DIR}/core/phpcs.xml.dist ${PHPCS_CONF}
 
 # RUN mkdir -p /var/www/html/sites/simpletest/browser_output && chmod -Rv 777 /var/www/html/sites/simpletest/browser_output
-
 RUN sed -i 's|name="SIMPLETEST_BASE_URL" value=""|name="SIMPLETEST_BASE_URL" value="http://localhost"|g' ${PHPUNIT_CONF}
 RUN sed -i 's|name="SIMPLETEST_DB" value=""|name="SIMPLETEST_DB" value="sqlite://sites/default/files/.ht.sqlite"|g' ${PHPUNIT_CONF}
 # RUN sed -i 's|name="BROWSERTEST_OUTPUT_DIRECTORY" value=""|name="BROWSERTEST_OUTPUT_DIRECTORY" value="/opt/drupal/web/sites/default/files/simpletest/browser_output"|g' ${PHPUNIT_CONF}
 RUN sed -i 's|name="BROWSERTEST_OUTPUT_DIRECTORY" value=""|name="BROWSERTEST_OUTPUT_DIRECTORY" value="${BROWSERTEST_OUTPUT_DIRECTORY}"|g' ${PHPUNIT_CONF}
 RUN sed -i 's|name="<!-- <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/> -->|name="<env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>|g' ${PHPUNIT_CONF}
+
+# # RUN chsh -s /bin/bash www-data&& su -p www-data
+RUN chsh -s /bin/bash www-data
+# USER www-data

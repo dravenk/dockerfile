@@ -29,5 +29,6 @@ docker push dravenk/dp:dev
 running phpunit test
 ```
 docker rm -f dpdev; docker run --name dpdev -d dravenk/dp:dev
-docker exec -it dpdev phpunit -c web/core/phpunit.xml
+docker exec -i dpdev sh -c 'su www-data'
+phpunit -c web/core/phpunit.xml
 ```

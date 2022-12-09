@@ -10,7 +10,7 @@ cd d9web
 ```
 Run docker container with local project.
 ```
-docker run --name some-drupal -p 8080:80 -v $PWD:/var/www/html -d dravenk/dp:dev
+docker run --name dpdev -p 8878:80 -v $PWD:/opt/drupal -d dravenk/dp:dev
 ```
 
 running phpunit test
