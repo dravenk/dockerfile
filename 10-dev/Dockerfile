@@ -1,4 +1,4 @@
-FROM dravenk/dp:latest
+FROM dravenk/dp:10-fpm
 
 ## https://www.drupal.org/docs/develop/using-composer/starting-a-site-using-drupal-composer-project-templates#s-adding-drupalcore-dev
 RUN set -eux; rm composer.lock; composer require --dev -W drupal/core-dev --no-interaction

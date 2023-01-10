@@ -1,4 +1,4 @@
-FROM drupal:rc-fpm
+FROM drupal:10
 
 # set timezone
 ENV TZ=Asia/Shanghai
@@ -19,19 +19,20 @@ RUN apt-get update -y \
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/local/bin/ --filename=composer
 
+## Install drush 8
 ENV DRUSH_VERSION 8.4.10
-    ## Install drush 8
 RUN wget -O /usr/local/bin/drush8 https://github.com/drush-ops/drush/releases/download/${DRUSH_VERSION}/drush.phar && \
     chmod +x /usr/local/bin/drush8
 
-    ## Install drush-launcher
+## Install drush-launcher
 RUN composer require drush/drush && \
     wget -O /usr/local/bin/drush https://github.com/drush-ops/drush-launcher/releases/latest/download/drush.phar && \
-    chmod +x /usr/local/bin/drush;\
-    # Install drupal-console
-    curl https://drupalconsole.com/installer -L -o drupal.phar && \
-    mv drupal.phar /usr/local/bin/drupal && \
-    chmod +x /usr/local/bin/drupal
+    chmod +x /usr/local/bin/drush
+
+# Install drupal-console
+# RUN curl https://drupalconsole.com/installer -L -o drupal.phar && \
+#     mv drupal.phar /usr/local/bin/drupal && \
+#     chmod +x /usr/local/bin/drupal
 
 # Install apcu and uploadprogress
 RUN pecl install apcu uploadprogress; docker-php-ext-enable apcu uploadprogress
@@ -43,15 +44,10 @@ RUN echo "alias drush='./vendor/bin/drush'" >> ~/.bashrc && \
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
 COPY ./conf.d/default.conf /etc/nginx/conf.d/
-# COPY ./php/docker.conf /usr/local/etc/php-fpm.d/docker.conf
-# COPY ./php/php-fpm.conf /usr/local/etc/php-fpm.d/docker.conf
 COPY ./php/zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 COPY ./php/conf.d/php-upload.ini /usr/local/etc/php/conf.d/php-uploads.ini
 COPY ./php/conf.d/docker-php-ext-apcu.ini /usr/local/etc/php/conf.d/docker-php-ext-apcu.ini
 COPY ./php/conf.d/docker-php-ext-uploadprogress.ini /usr/local/etc/php/conf.d/docker-php-ext-uploadprogress.ini
-
-# EXPOSE 80
-# EXPOSE 443
 
 COPY entrypoint.sh /etc/entrypoint.sh
 ENTRYPOINT ["sh", "/etc/entrypoint.sh"]
