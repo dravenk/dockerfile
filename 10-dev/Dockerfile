@@ -75,7 +75,7 @@ RUN mkdir -p ${BROWSERTEST_OUTPUT_DIRECTORY} \
 #Install using SQLite in-memory database.  --account-pass=admin
 # RUN drush si -y --db-url=sqlite:web/sites/default/files/.ht.sqlite
 RUN cp ${WEB_DIR}/core/phpunit.xml.dist ${PHPUNIT_CONF} && \
-    phpunit -c ${PHPUNIT_CONF} --migrate-configuration && \
+    # phpunit -c ${PHPUNIT_CONF} --migrate-configuration && \
     cp ${WEB_DIR}/core/phpcs.xml.dist ${PHPCS_CONF}
 
 # RUN mkdir -p /var/www/html/sites/simpletest/browser_output && chmod -Rv 777 /var/www/html/sites/simpletest/browser_output

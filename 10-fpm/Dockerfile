@@ -1,4 +1,4 @@
-FROM drupal:10
+FROM drupal:10-fpm
 
 # set timezone
 ENV TZ=Asia/Shanghai
