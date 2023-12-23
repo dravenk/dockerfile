@@ -38,7 +38,9 @@ RUN pecl install apcu uploadprogress; docker-php-ext-enable apcu uploadprogress
 
 ## Remove this temporary solution after the issue XXX has been fixed.
 ## See https://github.com/drush-ops/drush-launcher/issues/84
-RUN echo "alias drush='./vendor/bin/drush'" >> ~/.bashrc && \
+RUN echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"'; \
+    echo 'export PATH="$PATH:/opt/drupal/vendor/bin"'; \
+    >> ~/.bashrc && \
     /bin/bash -c "source ~/.bashrc"
 
 COPY ./nginx.conf /etc/nginx/nginx.conf

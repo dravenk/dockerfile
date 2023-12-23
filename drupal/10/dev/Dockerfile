@@ -12,6 +12,7 @@ RUN set -eux; composer global require dealerdirect/phpcodesniffer-composer-insta
 
 RUN { \
     echo 'export PATH="$PATH:$HOME/.composer/vendor/bin"'; \
+    echo 'export PATH="$PATH:/opt/drupal/vendor/bin"'; \
     echo 'alias drupalcs="phpcs --standard=Drupal --extensions='php,module,inc,install,test,profile,theme,css,info,txt,md,yml'"'; \
     echo 'alias drupalcsp="phpcs --standard=DrupalPractice --extensions='php,module,inc,install,test,profile,theme,css,info,txt,md,yml'"'; \
     echo 'alias drupalcbf="phpcbf --standard=Drupal --extensions='php,module,inc,install,test,profile,theme,css,info,txt,md,yml'"'; \

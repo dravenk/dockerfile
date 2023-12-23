@@ -17,10 +17,11 @@ RUN apt-get update -y \
 RUN curl -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/local/bin/ --filename=composer
 
-## Install drush-launcher
-RUN composer require drush/drush && \
-    wget -O /usr/local/bin/drush https://github.com/drush-ops/drush-launcher/releases/latest/download/drush.phar && \
-    chmod +x /usr/local/bin/drush
+RUN composer require drush/drush
+# ## Install drush-launcher
+# RUN composer require drush/drush && \
+#     wget -O /usr/local/bin/drush https://github.com/drush-ops/drush-launcher/releases/latest/download/drush.phar && \
+#     chmod +x /usr/local/bin/drush
 
 # Install apcu and uploadprogress
 RUN pecl install apcu uploadprogress; docker-php-ext-enable apcu uploadprogress
