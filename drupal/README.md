@@ -13,5 +13,5 @@ docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t dravenk/d
 ```
 docker rm -f drupaldev; docker run --name drupaldev -d dravenk/drupal:dev
 docker exec -i drupaldev sh -c 'su www-data'
-phpunit -c web/core/phpunit.xml
+phpunit -c web/core/phpunit.xml web/core/modules/action
 ```
