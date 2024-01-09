@@ -1,7 +1,11 @@
 # drupal
 
+
 ### build and push to [docker hub](https://hub.docker.com/r/dravenk/drupal)
 ```console
+sudo apt install docker-buildx
+docker buildx create --use
+
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t dravenk/drupal:latest drupal/10/fpm --push
 docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t dravenk/drupal:dev drupal/10/dev --push
 

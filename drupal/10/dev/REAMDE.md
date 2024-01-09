@@ -3,9 +3,9 @@ Try:
 docker run --name dpdev -p 8080:80 -d dravenk/drupal:dev
 ````
 OR:
-Create a drupal 9 project with composer.
+Create a drupal 10 project with composer.
 ```
-composer create-project drupal/recommended-project d9web "^9.0" -vvv
+composer create-project drupal/recommended-project d10web "^10.0" -vvv
 cd d9web
 ```
 Run docker container with local project.

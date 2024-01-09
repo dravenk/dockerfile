@@ -24,9 +24,8 @@ RUN { \
 RUN { \
     echo '[xdebug]'; \
     # echo 'xdebug.mode=off'; \
-    echo 'xdebug.mode=develop,coverage,debug'; \
+    echo 'xdebug.mode=debug'; \
     echo 'xdebug.start_with_request=yes'; \
-    echo 'xdebug.discover_client_host=true'; \
     echo 'xdebug.client_host=host.docker.internal'; \
     } >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
     && pecl install xdebug; docker-php-ext-enable xdebug
